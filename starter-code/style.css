@@ -156,3 +156,31 @@ a {
   text-decoration: none;
 }
 
+
+
+
+
+
+
+/* Page Layout */
+.page {
+  display: grid;
+  grid-template-columns:
+  [full-width-start] 0px [breakout-start] 24px [content-start] 1fr [content-end] 24px [breakout-end] 0px [full-width-end]
+}
+
+/* content = von content-start bis content-end */
+.page > * {
+  grid-column: content;
+}
+.page > .breakout {
+  grid-column: breakout;
+}
+
+
+.page {
+    background-color: var(--slate-900);
+    height: 100vh;
+}
+
+main {}
