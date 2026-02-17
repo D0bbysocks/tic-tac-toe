@@ -409,6 +409,19 @@ main {
 
 /* Game-Card */
 
+  .game-card {
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+  }
+
+  @media (min-width: 768px) {
+    .game-card {
+      gap: 20px;
+    }
+  }
+
+
 .game-field {
   width: 100%;
   max-width: 461px;
@@ -470,4 +483,108 @@ main {
 .back:active {
   box-shadow: inset 0 -2px 0 #6B8997;
   transform: translateY(2px);
+}
+
+
+/* Game-Board */
+.game-board-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-20px);
+}
+
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: clamp(8px, 4vw, var(--spacing-20px));
+
+  width: 100%;
+}
+
+.game-board__cell {
+
+  position: relative;
+
+  padding: var(--spacing-24px);
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  max-width: 140px;
+  max-height: 140px;
+  background-color: var(--slate-800);
+  border-radius: var(--radius-16px);
+  box-shadow: inset 0 -8px 0 #10212A;
+  cursor: pointer;
+}
+
+/* .game-board__cell:hover {
+  background-color: var(--slate-700);
+} */
+
+.game-board-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-20px);
+
+  height: clamp(64px, 10vw, 96px);
+}
+
+@media (min-width: 768px) {
+  .game-board-footer {
+    height: 96px;
+  }
+}
+
+.score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+
+  border-radius: var(--radius-10px);
+}
+
+.score--player {
+  background-color: var(--teal-400);
+
+}
+
+.score--ties {
+  background-color: var(--slate-300);
+}
+
+.score--opponent {
+  background-color: var(--amber-400);
+}
+
+
+
+/* Active Icons */
+.active-o {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-image: url("./assets/icon-o.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 40px;
+  height: 40px;
+}
+
+.active-x {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-image: url("./assets/icon-x.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 40px;
+  height: 40px;
 }
