@@ -11,13 +11,68 @@
 <body>
   <div class="page">
     <main>
-      <section class="game-start">
-         <header class="game-start__header"></header>
-         <div class="game-start__mark"></div>
-         <div class="game-start__mode"></div>
+      <section class="game-start" hidden>
+
+         <header class="game-start__header">
+          <img src="./assets/logo.svg" alt="">
+         </header>
+
+         <fieldset class="game-start__mark">
+          <p class="tp-4">PICK PLAYER 1’S MARK</p>
+
+          <div class="player-icons ">
+            <label class="mark-option">
+              <input type="radio" name="p1-mark" value="x" checked>
+              <span class="mark-visual" aria-hidden="true">
+                <svg class="icon icon--x" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+                    <path d="M15.002 1.147 32 18.145 48.998 1.147a3 3 0 0 1 4.243 0l9.612 9.612a3 3 0 0 1 0 4.243L45.855 32l16.998 16.998a3 3 0 0 1 0 4.243l-9.612 9.612a3 3 0 0 1-4.243 0L32 45.855 15.002 62.853a3 3 0 0 1-4.243 0L1.147 53.24a3 3 0 0 1 0-4.243L18.145 32 1.147 15.002a3 3 0 0 1 0-4.243l9.612-9.612a3 3 0 0 1 4.243 0Z"
+                    fill="currentColor" fill-rule="evenodd"/>
+                </svg>
+              </span>
+              <span class="sr-only">X</span>
+            </label>
+
+            <label class="mark-option">
+              <input type="radio" name="p1-mark" value="o">
+              <span class="mark-visual" aria-hidden="true">
+                <svg class="icon icon--o" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+                  <path d="M32 0c17.673 0 32 14.327 32 32 0 17.673-14.327 32-32 32C14.327 64 0 49.673 0 32 0 14.327 14.327 0 32 0Zm0 18.963c-7.2 0-13.037 5.837-13.037 13.037 0 7.2 5.837 13.037 13.037 13.037 7.2 0 13.037-5.837 13.037-13.037 0-7.2-5.837-13.037-13.037-13.037Z"
+                  fill="currentColor" fill-rule="evenodd"/>
+                </svg>
+              </span>
+              <span class="sr-only">O</span>
+            </label>
+          </div>
+          <p class="tp-5">REMEMBER : X GOES FIRST</p>
+        </fieldset>
+
+        <div class="game-start__mode">
+          <button class="game-btn cpu-btn tp-4" value="cpu">NEW GAME (VS CPU)</button>
+          <button class="game-btn pvp-btn tp-4" value="pvp">NEW GAME  (VS PLAYER)</button>
+        </div>
       </section>
 
-      <section class="game-field" hidden></section>
+      <section class="game-field">
+        <div class="game-card">
+          <header class="game-card__header">
+            <img src="./assets/logo.svg" alt="" class="logo">
+            <div class="turn-indicator">
+              <div class="icon-x">
+                <svg class="icon icon--x" hidden viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+                    <path d="M15.002 1.147 32 18.145 48.998 1.147a3 3 0 0 1 4.243 0l9.612 9.612a3 3 0 0 1 0 4.243L45.855 32l16.998 16.998a3 3 0 0 1 0 4.243l-9.612 9.612a3 3 0 0 1-4.243 0L32 45.855 15.002 62.853a3 3 0 0 1-4.243 0L1.147 53.24a3 3 0 0 1 0-4.243L18.145 32 1.147 15.002a3 3 0 0 1 0-4.243l9.612-9.612a3 3 0 0 1 4.243 0Z"
+                    fill="currentColor" fill-rule="evenodd"/>
+                </svg>
+                <svg class="icon icon--o" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+                  <path d="M32 0c17.673 0 32 14.327 32 32 0 17.673-14.327 32-32 32C14.327 64 0 49.673 0 32 0 14.327 14.327 0 32 0Zm0 18.963c-7.2 0-13.037 5.837-13.037 13.037 0 7.2 5.837 13.037 13.037 13.037 7.2 0 13.037-5.837 13.037-13.037 0-7.2-5.837-13.037-13.037-13.037Z"
+                  fill="currentColor" fill-rule="evenodd"/>
+                </svg>
+              </div>
+              <p class="tp-5">TURN</p>
+            </div>
+            <button class="back"><img src="./assets/icon-restart.svg" alt=""></button>
+          </header>
+        </div>
+      </section>
     </main>
   </div>
 

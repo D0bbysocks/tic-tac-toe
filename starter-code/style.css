@@ -56,9 +56,9 @@
   --tp-4-track: 0.0625em;
   --tp-4-weight: 700;
 
-  --tp-5-bold-size: 0.875rem;
-  --tp-5-bold-line: 1.3;
-  --tp-5-bold-track: 0.056em;
+  --tp-5-size: 0.875rem;
+  --tp-5-line: 1.3;
+  --tp-5-track: 0.056em;
   --tp-5-bold-weight: 700;
 
   --tp-5-med-size: 0.875rem;
@@ -79,6 +79,7 @@
   --spacing-20px: 1.25rem;
   --spacing-24px: 1.5rem;
   --spacing-30px: 1.875rem;
+  --spacing-32px: 2rem;
   --spacing-40px: 2.5rem;
 
   /* ---------- RADIUS ---------- */
@@ -156,8 +157,82 @@ a {
   text-decoration: none;
 }
 
+/* =========================================================
+   Helpers
+   ========================================================= */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* .sr-only-focusable:focus,
+.sr-only-focusable:active {
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  clip-path: none;
+  white-space: normal;
+} */
 
 
+.tp-1 {
+  font-size: var(--tp-1-size);
+  line-height: var(--tp-1-line);
+  letter-spacing: var(--tp-1-track);
+  font-weight: var(--tp-1-weight);
+}
+
+.tp-2 {
+  font-size: var(--tp-2-size);
+  line-height: var(--tp-2-line);
+  letter-spacing: var(--tp-2-track);
+  font-weight: var(--tp-2-weight);
+}
+
+.tp-3 {
+  font-size: var(--tp-3-size);
+  line-height: var(--tp-3-line);
+  letter-spacing: var(--tp-3-track);
+  font-weight: var(--tp-3-weight);
+}
+
+.tp-4 {
+  font-size: var(--tp-4-size);
+  line-height: var(--tp-4-line);
+  letter-spacing: var(--tp-4-track);
+  font-weight: var(--tp-4-weight);
+}
+.tp-5 {
+  font-size: var(--tp-5-size);
+  line-height: var(--tp-5-line);
+  letter-spacing: var(--tp-5-track);
+  font-weight: var(--tp-5-bold-weight);
+}
+.tp-5-reg {
+  font-size: var(--tp-5-size);
+  line-height: var(--tp-5-line);
+  letter-spacing: var(--tp-5-track);
+  font-weight: var(--tp-5-med-weight);
+}
+.tp-6-reg {
+  font-size: var(--tp-6-size);
+  line-height: var(--tp-6-line);
+  letter-spacing: var(--tp-6-track);
+  font-weight: var(--tp-6-weight);
+}
 
 
 
@@ -165,8 +240,13 @@ a {
 /* Page Layout */
 .page {
   display: grid;
+  place-items: center;
   grid-template-columns:
-  [full-width-start] 0px [breakout-start] 24px [content-start] 1fr [content-end] 24px [breakout-end] 0px [full-width-end]
+  [full-width-start] 0px [breakout-start] 24px [content-start] 1fr [content-end] 24px [breakout-end] 0px [full-width-end];
+  min-height: 100vh;
+
+  background-color: var(--slate-900);
+  font-family: "Outfit";
 }
 
 /* content = von content-start bis content-end */
@@ -177,10 +257,217 @@ a {
   grid-column: breakout;
 }
 
-
-.page {
-    background-color: var(--slate-900);
-    height: 100vh;
+main {
+  justify-self: stretch;
+  width: 100%;
+  display: grid;
+  place-items: center;
 }
 
-main {}
+
+
+
+/* =========================================================
+   Game Start Card
+   ========================================================= */
+   .game-start {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-32px);
+    justify-content: center;
+    align-content: center;
+
+    width: 100%;
+    max-width: 460px;
+
+   }
+
+.game-start__header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+   .game-start__mark {
+    background-color: var(--slate-800);
+
+    padding: var(--spacing-24px);
+    border-radius: var(--radius-16px);
+
+    box-shadow: 0 8px 0 #10212A;
+
+
+   }
+
+.player-icons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+
+  background-color: var(--slate-900);
+
+  padding: var(--spacing-8px);
+  border-radius: var(--radius-10px);
+
+  margin-bottom: var(--spacing-16px);
+}
+
+.icon {
+  width: 2rem;
+  height: 2rem;
+  display: block;
+}
+
+  .icon--x {
+    color: var(--slate-300);
+  }
+
+
+  
+  .icon--o {
+    color: var(--slate-300);
+  }
+
+.mark-option input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.game-start__mark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: none;
+
+  color: var(--slate-300);
+}
+
+.game-start__mark p:first-of-type {
+  margin-bottom: var(--spacing-24px);
+}
+
+
+
+.mark-visual {
+  width: 100%;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.mark-option {
+  flex: 1;
+}
+
+.mark-option:has(input:checked) .mark-visual {
+  background: #A8BFC9;
+}
+
+.mark-option:has(input:checked) .mark-visual svg {
+  background: var(--slate-300);
+  color: var(--slate-900);
+}
+
+/* GameStart BTNs */
+.game-start__mode {
+  display: grid;
+  gap: var(--spacing-16px);
+
+  color: var(--slate-900);
+}
+
+.game-btn {
+  padding-block: var(--spacing-20px);
+  border-radius: var(--radius-16px);
+}
+
+.cpu-btn {
+  background-color: var(--amber-400);
+  box-shadow: inset 0 -8px 0 #CC8B13;
+}
+
+.pvp-btn {
+  background-color: var(--teal-400);
+  box-shadow: inset 0 -8px 0 #118C87;
+
+}
+
+.cpu-btn:active {
+  box-shadow: inset 0 -4px 0 #CC8B13;
+  transform: translateY(4px);
+}
+
+.pvp-btn:active {
+  box-shadow: inset 0 -4px 0 #118C87;
+  transform: translateY(4px);
+}
+
+
+
+/* Game-Card */
+
+.game-field {
+  width: 100%;
+  max-width: 461px;
+}
+
+.game-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  height: 30.5px;
+  width: auto;
+  
+}
+
+.turn-indicator {
+  display: flex;
+  gap: var(--spacing-8px);
+  align-items: center;
+  justify-content: center;
+
+  width: 96px;
+  height: 40px;
+  background-color: var(--slate-800);
+  color: var(--slate-300);
+  border-radius: var(--radius-6px);
+
+  box-shadow: inset 0 -4px 0 #10212A;
+}
+
+
+.turn-indicator .icon {
+  width: 16px;
+  height: 16px;
+}
+
+
+.back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  height: 40px;
+
+  background-color: var(--slate-300);
+  border-radius: var(--radius-6px);
+
+  box-shadow: inset 0 -4px 0 #6B8997;
+}
+
+.back img {
+  width: 15.4px;
+  height: 15.4px;
+}
+
+.back:active {
+  box-shadow: inset 0 -2px 0 #6B8997;
+  transform: translateY(2px);
+}
