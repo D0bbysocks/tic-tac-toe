@@ -588,3 +588,20 @@ main {
   width: 40px;
   height: 40px;
 }
+
+
+
+
+/* Winning Screen */
+.winning-screen {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-20px);
+  background-color: var(--slate-800);
+}
+
+/* .winning-screen__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-20px);
+} */
