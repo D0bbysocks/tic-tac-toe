@@ -84,10 +84,31 @@
               <div class="game-board__cell" data-cell-index="8"><div class="game-board__cell-icon"></div></div>
             </div>
             <div class="game-board-footer tp-6-reg">
-              <div class="score score--player">PLAYER<br><span class="score__points tp-3">0</span></div>
-              <div class="score score--ties">TIES<br><span class="score__points tp-3">0</span></div>
-              <div class="score score--opponent">OPPONENT<br><span class="score__points tp-3">0</span></div>
+              <div class="score score--player"><span class="score__text">PLAYER</span><br><span class="score__points tp-3">0</span></div>
+              <div class="score score--ties"><span class="score__text">TIES</span><br><span class="score__points tp-3">0</span></div>
+              <div class="score score--opponent"><span class="score__text">OPPONENT</span><br><span class="score__points tp-3">0</span></div>
             </div>
+          </div>
+        </div>
+      </section>
+      <div class="backdrop full-width-section"></div>
+      <section class="winning-screen full-width-section">
+        
+        <div class="winning-screen__content content">
+          <div class="winning-screen__winner" hidden>
+            <p class="tp-5 winning-screen__player-notice">PLAYER <span class="winning-screen__player-mark">X</span> WINS</p>
+            <div class="winning-message">
+              <img src="./assets/icon-o.svg" alt="" class="winning-message-icon" data-mark="o">
+              <img src="./assets/icon-x.svg" alt="" class="winning-message-icon" data-mark="x" hidden>
+              <p class="winning-message-text tp-2">TAKES THE ROUND</p>
+            </div>
+          </div>
+          <div class="winning-screen__tie">
+            <p class="tp-1 winning-screen__player-notice">ROUND TIED</p>
+          </div>
+          <div class="winning-screen__buttons">
+            <button class="game-btn tp-4" data-action="quit">QUIT</button>
+            <button class="game-btn tp-4" data-action="next-round">NEXT ROUND</button>
           </div>
         </div>
       </section>
