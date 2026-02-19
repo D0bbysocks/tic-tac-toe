@@ -15,9 +15,9 @@ const winningScreenPlayerMark = document.querySelector(".winning-screen__player-
 const winningIconX = document.querySelector('.winning-message-icon[data-mark="x"]');
 const winningIconO = document.querySelector('.winning-message-icon[data-mark="o"]');
 
-const playerOneScore = document.querySelector(".score--player .score__points");
-const playerTwoScore = document.querySelector(".score--opponent .score__points");
-const tiesScore = document.querySelector(".score--ties .score__points");
+const playerXScoreUI = document.querySelector(".score--player .score__points");
+const playerOScoreUI = document.querySelector(".score--opponent .score__points");
+const tiesScoreUI = document.querySelector(".score--ties .score__points");
 
 
 let playerX = true;
@@ -29,8 +29,8 @@ let playerOne = "X"; // Spieler 1 immer Mensch
 let playerTwo = "O"; // Spieler 2 CPU oder Mensch
 
 
-let playerXScore = 0;
-let playerOScore = 0;
+let xScore = 0;
+let oScore = 0;
 let tiesCounter = 0;
 let winner = false;
 
@@ -61,15 +61,27 @@ function isHumanTurn() {
 }
 
 
-function selectGameMode(e) {
-    mode = (e === "cpu") ? "cpu" : "pvp";
-    // playersTurn();
+function selectGameMode(value) {
+  mode = value; // "cpu" oder "pvp"
 }
 
 
 
 function cpuMove() {
-    console.log("CPU Move");
+    if (winner) return;
+
+    const allIndexes = [0,1,2,3,4,5,6,7,8];
+    const taken = movesX.concat(movesO);
+    const available = allIndexes.filter(index => !taken.includes(index));
+
+    if (available.length === 0) return;
+
+    const randomIndex = available[Math.floor(Math.random() * available.length)];
+    const cell = gameBoardCells[randomIndex];
+
+    setTimeout(() => {
+        cell.click();
+    }, 750);
 }
 
 
@@ -87,25 +99,25 @@ function endRound(result) {
     winner = true;
 
     if (result === "win") {
+
         if (playerX) {
-            playerXScore++;
-            playerOneScore.textContent = playerXScore;
+            updateScoreboardPoints("x");
         } else {
-            playerOScore++;
-            playerTwoScore.textContent = playerOScore;
+            updateScoreboardPoints("o");
         }
 
         setWinner("win");
 
     } else if (result === "tie") {
-            tiesCounter++;
-            tiesScore.textContent = tiesCounter;
-            setWinner("tie");
-        }       
+
+        updateScoreboardPoints("tie");
+        setWinner("tie");
+    }
 
     winningScreen.hidden = false;
     backdrop.hidden = false;
 }
+
 
 
 function checkTie() {
@@ -182,20 +194,56 @@ function resetGameBoard() {
     winner = false;
     gameBoardMoves = 0;
     playersTurn()
-    applyPlayerChoice("x")
-
 }
 
-function updateScoreboardLabels() {
-    const playerLabel = document.querySelector(".score--player .score__text");
-    const opponentLabel = document.querySelector(".score--opponent .score__text");
+function resetStartScreen() {
+    resetGameBoard();
+    const checked = document.querySelector('.player-icons input[type="radio"]:checked');
+    applyPlayerChoice(checked ? checked.value : "x");
+    xScore = 0;
+    oScore = 0;
+    tiesCounter = 0;
+    playerXScoreUI.textContent = xScore;
+    playerOScoreUI.textContent = oScore;
+    tiesScoreUI.textContent = tiesCounter;
+}
 
-    if (mode === "cpu") {
-        playerLabel.textContent = "PLAYER";
-        opponentLabel.textContent = "CPU";
+function updateScoreboardPoints(type) {
+
+    if (type === "x") {
+        xScore++;
+        playerXScoreUI.textContent = xScore;
+    }
+
+    if (type === "o") {
+        oScore++;
+        playerOScoreUI.textContent = oScore;
+    }
+
+    if (type === "tie") {
+        tiesCounter++;
+        tiesScoreUI.textContent = tiesCounter;
+    }
+}
+
+
+
+function updateScoreboardLabels() {
+    const X = document.querySelector(".score--player .score__text");
+    const O = document.querySelector(".score--opponent .score__text");
+
+    if (mode === "cpu" && playerOne === "X" ) {
+        X.textContent = "PLAYER";
+        O.textContent = "CPU";
+    } else if (mode === "cpu" && playerOne === "O") {
+        X.textContent = "CPU";
+        O.textContent = "PLAYER";
+    } else if (mode === "pvp" && playerOne === "X") {
+        X.textContent = "PLAYER 1";
+        O.textContent = "PLAYER 2";
     } else {
-        playerLabel.textContent = "PLAYER 1";
-        opponentLabel.textContent = "PLAYER 2";
+        X.textContent = "PLAYER 2";
+        O.textContent = "PLAYER 1";
     }
 }
 
@@ -209,10 +257,6 @@ function applyPlayerChoice(value) {
     });
   }
 
-
-backButton.addEventListener("click", () => {
-    showScreen(startScreen);
-});
 
 
 gameBoardCells.forEach((cell) => {
@@ -244,6 +288,10 @@ gameBoardCells.forEach((cell) => {
 
         playerChange();
         playersTurn();
+
+        if (mode === "cpu" && !winner && !isHumanTurn()) {
+            cpuMove();
+          }
     });
 });
 
@@ -255,6 +303,7 @@ gameStartButtons.forEach((btn) => {
         resetGameBoard()
         updateScoreboardLabels()
         showScreen(gameScreen);
+        console.log(playerOne);
         if (mode === "cpu" && !winner && !isHumanTurn()) {
             cpuMove();
           }
@@ -267,15 +316,25 @@ selectedMark.forEach((input) => {
     });
 });
 
+backButton.addEventListener("click", () => {
+    showScreen(startScreen);
+    resetStartScreen();
+});
+
 quitBtn.addEventListener("click", () => {
     showScreen(startScreen);
-    resetGameBoard();
+    resetStartScreen();
 });
 
 nextRoundBtn.addEventListener("click", () => {
     resetGameBoard();
     showScreen(gameScreen);
-});
+  
+    // falls CPU starten muss (Human ist O)
+    if (mode === "cpu" && !winner && !isHumanTurn()) {
+      cpuMove();
+    }
+  });
 
 // Todo
 // Punkte Zählen
