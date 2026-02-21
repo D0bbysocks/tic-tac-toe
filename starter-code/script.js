@@ -19,11 +19,16 @@ const playerXScoreUI = document.querySelector(".score--player .score__points");
 const playerOScoreUI = document.querySelector(".score--opponent .score__points");
 const tiesScoreUI = document.querySelector(".score--ties .score__points");
 
+const menuBtn = document.querySelector(".menu-btn");
+const menuOptions = document.querySelector(".menu-options");
+const difficultySelectors = document.querySelectorAll(".difficulty-selector");
+
 
 let playerX = true;
 let playerClass = "active-x";
 let mode = "cpu";
 let currentScreen = startScreen;
+let difficulty = "easy";
 
 let playerOne = "X"; // Spieler 1 immer Mensch
 let playerTwo = "O"; // Spieler 2 CPU oder Mensch
@@ -36,6 +41,7 @@ let winner = false;
 
 let movesX = []
 let movesO = []
+let closeMenuTimer = null
 
 let gameBoardMoves = 0;
 
@@ -50,9 +56,143 @@ let winningCombinations = [
     [2, 4, 6]
 ];
 
+let cpuTactics = [
+    {
+      name: "easy",
+      description: "Random move",
+      function: randomMove
+    },
+    {
+      name: "medium",
+      description: "Smarter move",
+      function: smarterMove
+    },
+    {
+      name: "hard",
+      description: "tactical Player",
+      function: tacticalPlayer
+    }
+  ]
 
 
+  function canCpuWin(ownMoves, opponentMoves) {
+    
+    const taken = ownMoves.concat(opponentMoves);
+  
+    for (const combo of winningCombinations) {
+      const ownInCombo = combo.filter(i => ownMoves.includes(i));
+  
+      if (ownInCombo.length === 2) {
+        const missing = combo.find(i => !ownMoves.includes(i));
+        if (!taken.includes(missing)) {
+          return missing;
+        }
+      }
+    }
+  
+    return null;
+  }
 
+
+  function tacticalPlayer() {
+    const allIndexes = [0,1,2,3,4,5,6,7,8];
+    const taken = movesX.concat(movesO);
+    const available = allIndexes.filter(i => !taken.includes(i));
+  
+    if (available.length === 0) return;
+  
+    
+    const opponentMoves = playerOne === "X" ? movesX : movesO; // Human
+    const ownMoves      = playerTwo === "X" ? movesX : movesO; // CPU
+  
+    
+    const winIndex = canCpuWin(ownMoves, opponentMoves);
+    if (winIndex !== null) {
+      setTimeout(() => gameBoardCells[winIndex].click(), 750);
+      return;
+    }
+  
+   
+    const blockIndex = checkBlockWin(opponentMoves, ownMoves);
+    if (blockIndex !== null) {
+      setTimeout(() => gameBoardCells[blockIndex].click(), 750);
+      return;
+    }
+  
+    
+    const priority = [4, 0, 2, 6, 8, 1, 3, 5, 7];
+    const bestIndex = priority.find(i => available.includes(i));
+  
+    
+    const moveIndex = bestIndex ?? available[Math.floor(Math.random() * available.length)];
+  
+    setTimeout(() => gameBoardCells[moveIndex].click(), 750);
+  }
+
+  function checkBlockWin(opponentMoves, ownMoves) {
+      
+    const taken = opponentMoves.concat(ownMoves);
+  
+    for (const combo of winningCombinations) {
+      
+      const oppInCombo = combo.filter(i => opponentMoves.includes(i));
+  
+      
+      if (oppInCombo.length === 2) {
+        
+        const missing = combo.find(i => !opponentMoves.includes(i));
+  
+        
+        if (!taken.includes(missing)) {
+          return missing; 
+        }
+      }
+    }
+  
+    return null;
+  }
+
+
+function smarterMove() {
+  const allIndexes = [0,1,2,3,4,5,6,7,8];
+  const taken = movesX.concat(movesO);
+  const available = allIndexes.filter(i => !taken.includes(i));
+
+  // Gegner bestimmen: wir blocken den HUMAN (playerOne)
+  const opponentMoves = playerOne === "X" ? movesX : movesO;
+  const ownMoves      = playerTwo === "X" ? movesX : movesO; // CPU
+
+  const blockIndex = checkBlockWin(opponentMoves, ownMoves);
+
+  if (blockIndex !== null) {
+    const cell = gameBoardCells[blockIndex];
+    setTimeout(() => cell.click(), 750);
+    return;
+  }
+
+  if (available.length === 0) return;
+
+  const randomIndex = available[Math.floor(Math.random() * available.length)];
+  const cell = gameBoardCells[randomIndex];
+
+  setTimeout(() => cell.click(), 750);
+}
+
+
+function randomMove() {
+    const allIndexes = [0,1,2,3,4,5,6,7,8];
+    const taken = movesX.concat(movesO);
+    const available = allIndexes.filter(index => !taken.includes(index));
+
+    if (available.length === 0) return;
+
+    const randomIndex = available[Math.floor(Math.random() * available.length)];
+    const cell = gameBoardCells[randomIndex];
+
+    setTimeout(() => {
+        cell.click();
+    }, 750);
+}
 
 
 function isHumanTurn() {
@@ -69,20 +209,17 @@ function selectGameMode(value) {
 
 function cpuMove() {
     if (winner) return;
-
-    const allIndexes = [0,1,2,3,4,5,6,7,8];
-    const taken = movesX.concat(movesO);
-    const available = allIndexes.filter(index => !taken.includes(index));
-
-    if (available.length === 0) return;
-
-    const randomIndex = available[Math.floor(Math.random() * available.length)];
-    const cell = gameBoardCells[randomIndex];
-
-    setTimeout(() => {
-        cell.click();
-    }, 750);
-}
+  
+    console.log("difficulty:", difficulty);
+    console.log("TEST");
+  
+    const tactic = cpuTactics.find(t => t.name === difficulty) 
+                ?? cpuTactics.find(t => t.name === "easy"); // fallback
+  
+    console.log("tactic:", tactic?.name);
+  
+    tactic?.function?.();
+  }
 
 
 
@@ -334,6 +471,36 @@ nextRoundBtn.addEventListener("click", () => {
     if (mode === "cpu" && !winner && !isHumanTurn()) {
       cpuMove();
     }
+  });
+
+menuBtn.addEventListener("click", () => {
+    menuBtn.classList.toggle("is-active");
+    menuOptions.toggleAttribute("hidden");
+});
+
+
+difficultySelectors.forEach(btn => {
+    btn.addEventListener("click", () => {
+  
+      // Aktiven Style setzen
+      difficultySelectors.forEach(b => b.classList.remove("is-active"));
+      difficulty = btn.dataset.difficulty;
+      console.log(difficulty);
+      btn.classList.add("is-active");
+  
+
+      if (closeMenuTimer) {
+        clearTimeout(closeMenuTimer);
+      }
+  
+      // Neuen Timer setzen
+      closeMenuTimer = setTimeout(() => {
+        menuBtn.classList.remove("is-active");
+        menuOptions.setAttribute("hidden", true);
+        closeMenuTimer = null;
+      }, 2000);
+  
+    });
   });
 
 // Todo

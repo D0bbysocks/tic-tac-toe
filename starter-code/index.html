@@ -11,7 +11,7 @@
 <body>
   <div class="page">
     <main>
-      <section class="game-start" hidden>
+      <section class="game-start">
 
          <header class="game-start__header">
           <img src="./assets/logo.svg" alt="">
@@ -52,7 +52,7 @@
         </div>
       </section>
 
-      <section class="game-field">
+      <section class="game-field" hidden>
         <div class="game-card">
           <header class="game-card__header">
             <img src="./assets/logo.svg" alt="" class="logo">
@@ -69,7 +69,19 @@
               </div>
               <p class="tp-5">TURN</p>
             </div>
-            <button class="back"><img src="./assets/icon-restart.svg" alt=""></button>
+            <div class="menu-container">
+              <button class="menu-btn">
+                <span class="burger__line"></span>
+                <span class="burger__line"></span>
+                <span class="burger__line"></span>
+              </button>
+              <button class="back"><img src="./assets/icon-restart.svg" alt=""></button>
+              <div class="menu-options" hidden>
+                <button class="difficulty-selector difficulty-selector--easy tp-4 is-active" data-difficulty="easy">EASY</button>
+                <button class="difficulty-selector difficulty-selector--medium tp-4" data-difficulty="medium">MEDIUM</button>
+                <button class="difficulty-selector difficulty-selector--hard tp-4" data-difficulty="hard">HARD</button>
+              </div>
+            </div>
           </header>
           <div class="game-board-wrapper">
             <div class="game-board">
@@ -91,8 +103,8 @@
           </div>
         </div>
       </section>
-      <div class="backdrop full-width-section"></div>
-      <section class="winning-screen full-width-section">
+      <div class="backdrop full-width-section" hidden></div>
+      <section class="winning-screen full-width-section" hidden>
         
         <div class="winning-screen__content content">
           <div class="winning-screen__winner" hidden>
