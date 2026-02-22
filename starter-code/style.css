@@ -294,17 +294,17 @@ main {
 /* =========================================================
    Game Start Card
    ========================================================= */
-   .game-start {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-32px);
-    justify-content: center;
-    align-content: center;
+.game-start {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-32px);
+  justify-content: center;
+  align-content: center;
 
-    width: 100%;
-    max-width: 460px;
+  width: 100%;
+  max-width: 460px;
 
-   }
+}
 
 .game-start__header {
   display: flex;
@@ -424,9 +424,17 @@ main {
   transform: translateY(4px);
 }
 
+.cpu-btn:hover {
+  background-color: var(--amber-300);
+}
+
 .pvp-btn:active {
   box-shadow: inset 0 -4px 0 #118C87;
   transform: translateY(4px);
+}
+
+.pvp-btn:hover {
+  background-color: var(--teal-300);
 }
 
 
@@ -701,7 +709,7 @@ main {
 
 
 
-/* Active Icons */
+/* Active Icons (inner element or directly on cell button for a11y) */
 .active-o {
   position: absolute;
   top: 50%;
@@ -713,6 +721,28 @@ main {
   background-position: center;
   width: 40px;
   height: 40px;
+}
+/* Cell as button: keep cell in flow, show icon as background */
+.game-board__cell.active-o {
+  position: relative;
+  top: auto;
+  left: auto;
+  transform: none;
+  width: auto;
+  height: auto;
+  background-image: url("./assets/icon-o.svg");
+  background-size: 40px 40px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+@media (min-width: 768px) {
+  .active-o {
+    width: 64px;
+    height: 64px;
+  }
+  .game-board__cell.active-o {
+    background-size: 64px 64px;
+  }
 }
 
 .active-x {
@@ -727,7 +757,28 @@ main {
   width: 40px;
   height: 40px;
 }
+.game-board__cell.active-x {
+  position: relative;
+  top: auto;
+  left: auto;
+  transform: none;
+  width: auto;
+  height: auto;
+  background-image: url("./assets/icon-x.svg");
+  background-size: 40px 40px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
 
+@media (min-width: 768px) {
+  .active-x {
+    width: 64px;
+    height: 64px;
+  }
+  .game-board__cell.active-x {
+    background-size: 64px 64px;
+  }
+}
 
 
 
@@ -840,3 +891,27 @@ main {
 }
 
 
+
+
+/* Hover Effects on Game-Board Cells */
+.game-board .game-board__cell.is-empty:hover {
+  background-size: 40px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Nur das Bild unterscheidet sich */
+.game-board.is-x-turn .game-board__cell.is-empty:hover {
+  background-image: url("./assets/icon-x-outline.svg");
+}
+
+.game-board.is-o-turn .game-board__cell.is-empty:hover {
+  background-image: url("./assets/icon-o-outline.svg");
+}
+
+/* Media Query nur einmal */
+@media (min-width: 768px) {
+  .game-board .game-board__cell.is-empty:hover {
+    background-size: 64px;
+  }
+}

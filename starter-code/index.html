@@ -70,30 +70,30 @@
               <p class="tp-5">TURN</p>
             </div>
             <div class="menu-container">
-              <button class="menu-btn">
+              <button class="menu-btn" aria-label="Open game menu">
                 <span class="burger__line"></span>
                 <span class="burger__line"></span>
                 <span class="burger__line"></span>
               </button>
-              <button class="back"><img src="./assets/icon-restart.svg" alt=""></button>
+              <button class="back"><img src="./assets/icon-restart.svg" alt="" aria-label="Restart game"></button>
               <div class="menu-options" hidden>
-                <button class="difficulty-selector difficulty-selector--easy tp-4 is-active" data-difficulty="easy">EASY</button>
-                <button class="difficulty-selector difficulty-selector--medium tp-4" data-difficulty="medium">MEDIUM</button>
-                <button class="difficulty-selector difficulty-selector--hard tp-4" data-difficulty="hard">HARD</button>
+                <button class="difficulty-selector difficulty-selector--easy tp-4 is-active" data-difficulty="easy" aria-pressed="true">EASY</button>
+                <button class="difficulty-selector difficulty-selector--medium tp-4" data-difficulty="medium" aria-pressed="false">MEDIUM</button>
+                <button class="difficulty-selector difficulty-selector--hard tp-4" data-difficulty="hard" aria-pressed="false">HARD</button>
               </div>
             </div>
           </header>
           <div class="game-board-wrapper">
             <div class="game-board">
-              <div class="game-board__cell" data-cell-index="0"><div class="game-board__cell-icon"></div></div>
-              <div class="game-board__cell" data-cell-index="1"><div class="game-board__cell-icon"></div></div>
-              <div class="game-board__cell" data-cell-index="2"><div class="game-board__cell-icon"></div></div>
-              <div class="game-board__cell" data-cell-index="3"><div class="game-board__cell-icon"></div></div>
-              <div class="game-board__cell" data-cell-index="4"><div class="game-board__cell-icon"></div></div>
-              <div class="game-board__cell" data-cell-index="5"><div class="game-board__cell-icon"></div></div>
-              <div class="game-board__cell" data-cell-index="6"><div class="game-board__cell-icon"></div></div>
-              <div class="game-board__cell" data-cell-index="7"><div class="game-board__cell-icon"></div></div>
-              <div class="game-board__cell" data-cell-index="8"><div class="game-board__cell-icon"></div></div>
+              <button class="game-board__cell is-empty" type="button" data-cell-index="0" aria-label="Cell 1"></button> 
+              <button class="game-board__cell is-empty" type="button" data-cell-index="1" aria-label="Cell 2"></button>
+              <button class="game-board__cell is-empty" type="button" data-cell-index="2" aria-label="Cell 3"></button>
+              <button class="game-board__cell is-empty" type="button" data-cell-index="3" aria-label="Cell 4"></button>
+              <button class="game-board__cell is-empty" type="button" data-cell-index="4" aria-label="Cell 5"></button>
+              <button class="game-board__cell is-empty" type="button" data-cell-index="5" aria-label="Cell 6"></button>
+              <button class="game-board__cell is-empty" type="button" data-cell-index="6" aria-label="Cell 7"></button>
+              <button class="game-board__cell is-empty" type="button" data-cell-index="7" aria-label="Cell 8"></button>
+              <button class="game-board__cell is-empty" type="button" data-cell-index="8" aria-label="Cell 9"></button>
             </div>
             <div class="game-board-footer tp-6-reg">
               <div class="score score--player"><span class="score__text">PLAYER</span><br><span class="score__points tp-3">0</span></div>

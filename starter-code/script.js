@@ -6,6 +6,7 @@ const backButton = document.querySelector(".back");
 const gameBoardCells = document.querySelectorAll(".game-board__cell");
 const gameBoardCellIcons = document.querySelectorAll(".game-board__cell-icon");
 const turnIndicator = document.querySelectorAll(".icons");
+const gameBoard = document.querySelector(".game-board");
 
 const quitBtn = document.querySelector('[data-action="quit"]');
 const nextRoundBtn = document.querySelector('[data-action="next-round"]');
@@ -29,6 +30,7 @@ let playerClass = "active-x";
 let mode = "cpu";
 let currentScreen = startScreen;
 let difficulty = "easy";
+let isCpuThinking = false;
 
 let playerOne = "X"; // Spieler 1 immer Mensch
 let playerTwo = "O"; // Spieler 2 CPU oder Mensch
@@ -108,16 +110,23 @@ let cpuTactics = [
     
     const winIndex = canCpuWin(ownMoves, opponentMoves);
     if (winIndex !== null) {
-      setTimeout(() => gameBoardCells[winIndex].click(), 750);
-      return;
-    }
+        setTimeout(() => {
+          gameBoardCells[winIndex].click();
+          isCpuThinking = false;
+        }, 750);
+        return;
+      }
+      
   
    
     const blockIndex = checkBlockWin(opponentMoves, ownMoves);
     if (blockIndex !== null) {
-      setTimeout(() => gameBoardCells[blockIndex].click(), 750);
-      return;
-    }
+        setTimeout(() => {
+          gameBoardCells[blockIndex].click();
+          isCpuThinking = false;
+        }, 750);
+        return;
+      }
   
     
     const priority = [4, 0, 2, 6, 8, 1, 3, 5, 7];
@@ -126,7 +135,10 @@ let cpuTactics = [
     
     const moveIndex = bestIndex ?? available[Math.floor(Math.random() * available.length)];
   
-    setTimeout(() => gameBoardCells[moveIndex].click(), 750);
+    setTimeout(() => {
+        gameBoardCells[moveIndex].click();
+        isCpuThinking = false;
+      }, 750);
   }
 
   function checkBlockWin(opponentMoves, ownMoves) {
@@ -166,7 +178,10 @@ function smarterMove() {
 
   if (blockIndex !== null) {
     const cell = gameBoardCells[blockIndex];
-    setTimeout(() => cell.click(), 750);
+    setTimeout(() => {
+      cell.click();
+      isCpuThinking = false;
+    }, 750);
     return;
   }
 
@@ -175,7 +190,10 @@ function smarterMove() {
   const randomIndex = available[Math.floor(Math.random() * available.length)];
   const cell = gameBoardCells[randomIndex];
 
-  setTimeout(() => cell.click(), 750);
+  setTimeout(() => {
+    cell.click();
+    isCpuThinking = false;
+  }, 750);
 }
 
 
@@ -191,6 +209,7 @@ function randomMove() {
 
     setTimeout(() => {
         cell.click();
+        isCpuThinking = false;
     }, 750);
 }
 
@@ -210,15 +229,12 @@ function selectGameMode(value) {
 function cpuMove() {
     if (winner) return;
   
-    console.log("difficulty:", difficulty);
-    console.log("TEST");
+    isCpuThinking = true;
   
     const tactic = cpuTactics.find(t => t.name === difficulty) 
-                ?? cpuTactics.find(t => t.name === "easy"); // fallback
+                ?? cpuTactics.find(t => t.name === "easy");
   
-    console.log("tactic:", tactic?.name);
-  
-    tactic?.function?.();
+    tactic?.function();
   }
 
 
@@ -295,6 +311,18 @@ function playerMove(index) {
     }
 }
 
+function setTurnIndicator() {
+    console.log(playerClass);
+    if (playerClass === "active-x") {
+      gameBoard.classList.add("is-x-turn");
+      gameBoard.classList.remove("is-o-turn");
+    } else {
+      gameBoard.classList.add("is-o-turn");
+      gameBoard.classList.remove("is-x-turn");
+    }
+}
+
+
 function playersTurn() {
     turnIndicator.forEach((icon) => {
         let xIcon = icon.querySelector(".icon--x");
@@ -320,9 +348,16 @@ function showScreen(screenToShow) {
 function resetGameBoard() {
     playerClass = "active-x";
     playerX = true;
+    gameBoardCells.forEach((cell) => {
+        cell.classList.add("is-empty");
+    });
     gameBoardCellIcons.forEach((icon) => {
         icon.classList.remove("active-x");
         icon.classList.remove("active-o");
+    });
+    gameBoardCells.forEach((cell) => {
+        cell.classList.remove("active-x");
+        cell.classList.remove("active-o");
     });
     movesX = [];
     movesO = [];
@@ -395,21 +430,24 @@ function applyPlayerChoice(value) {
   }
 
 
-
+console.log(gameBoardCells);
 gameBoardCells.forEach((cell) => {
     cell.addEventListener("click", () => {
         if (winner) return;
 
-        const icon = cell.querySelector(".game-board__cell-icon");
+        if (mode === "cpu" && isCpuThinking && isHumanTurn()) return;
 
-        if (icon.classList.contains("active-x") || icon.classList.contains("active-o")) return;
+        const icon = cell.querySelector(".game-board__cell-icon");
+        const markTarget = icon || cell;
+        if (markTarget.classList.contains("active-x") || markTarget.classList.contains("active-o")) return;
 
         const index = Number(cell.dataset.cellIndex);
 
-        icon.classList.add(playerClass);
+        markTarget.classList.add(playerClass);
 
         playerMove(index);
         gameBoardMoves++;
+        cell.classList.remove("is-empty");
 
         const currentMoves = playerX ? movesX : movesO;
 
@@ -425,6 +463,7 @@ gameBoardCells.forEach((cell) => {
 
         playerChange();
         playersTurn();
+        setTurnIndicator();
 
         if (mode === "cpu" && !winner && !isHumanTurn()) {
             cpuMove();
@@ -437,6 +476,7 @@ gameBoardCells.forEach((cell) => {
 gameStartButtons.forEach((btn) => {
     btn.addEventListener("click", (e) =>{
         selectGameMode(e.target.value);
+        setTurnIndicator();
         resetGameBoard()
         updateScoreboardLabels()
         showScreen(gameScreen);
@@ -483,7 +523,12 @@ difficultySelectors.forEach(btn => {
     btn.addEventListener("click", () => {
   
       // Aktiven Style setzen
-      difficultySelectors.forEach(b => b.classList.remove("is-active"));
+      difficultySelectors.forEach(b => {
+        b.classList.remove("is-active");
+        b.setAttribute("aria-pressed", "false");
+      });
+      btn.setAttribute("aria-pressed", "true");
+
       difficulty = btn.dataset.difficulty;
       console.log(difficulty);
       btn.classList.add("is-active");
