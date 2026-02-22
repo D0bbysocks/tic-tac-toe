@@ -1,6 +1,6 @@
 # Frontend Mentor - Tic Tac Toe
 
-![Design preview for the Tic Tac Toe coding challenge](./preview.jpg)
+![Design preview for the Tic Tac Toe coding challenge](./screenshot.jpg)
 
 ## Welcome! 👋
 
